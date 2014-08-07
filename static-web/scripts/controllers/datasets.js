@@ -8,10 +8,19 @@
  * Controller of the glassApp
  */
 //inject angular file upload directives and service.
-angular.module('glassApp').controller('DatasetCtrl', function ($scope, $upload) {
+angular.module('glassApp').controller('DatasetCtrl', function ($scope, $upload, dataservice) {
 	
-	$scope.showInitialSplash = true;
+	$scope.showPersonalDataGrid = true;
+	$scope.showPublicDataGrid = true;
 
+	$scope.personalGridData = "[]";
+    $scope.personalGridOptions = { data: 'personalGridData' };
+    $scope.publicGridData = "[]";
+    $scope.publicGridOptions = { data: 'publicGridData' };
+	// setup data
+	dataservice.getUserDatasets().then(function(data) {
+	});
+	
 	$scope.onFileSelect = function($files) {
 	    //$files: an array of files selected, each file has name, size, and type.
 	    for (var i = 0; i < $files.length; i++) {
@@ -27,6 +36,7 @@ angular.module('glassApp').controller('DatasetCtrl', function ($scope, $upload) 
 	      }).success(function(data, status, headers, config) {
 	        // file is uploaded successfully
 	        console.log(data);
+	        
 	      });
 	    }
 	  };
