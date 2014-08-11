@@ -3,6 +3,7 @@
  */
 package com.infinity.glass.manager;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
@@ -16,6 +17,6 @@ import com.infinity.glass.model.UserIdentity;
  */
 public interface DatasetManager {
 	DatasetSummaryBean getDatasetsForUser(final UserIdentity userId);
-	DatasetBean SaveDataset(UserIdentity userIdentity, String origFileName, OutputStream stream);
-	void LoadDataset(final String userId, final String datasetId, InputStream stream);
+	DatasetBean saveDataset(UserIdentity userIdentity, String origFileName, InputStream stream) throws IOException;
+	void LoadDataset(final String userId, final String datasetId, OutputStream stream);
 }

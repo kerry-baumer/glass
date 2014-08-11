@@ -1,6 +1,7 @@
 package com.infinity.glass.servlet;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -51,7 +52,7 @@ public class FileUploadServlet extends HttpServlet {
 		try {
 			UserIdentity userIdentity = ManagerFactory.getUserIdentityManager().getUserIdentity(request);
 			StringBuilder sb = new StringBuilder("{\"result\": [");
-			OutputStream uploadedData = new ByteArrayOutputStream();
+			ByteArrayOutputStream uploadedData = new ByteArrayOutputStream();
 			String fileName = "N/A";
 			int fileSize = 0;
 			if (request.getHeader("Content-Type") != null
@@ -94,7 +95,7 @@ public class FileUploadServlet extends HttpServlet {
 			LOGGER.info("Glass uploaded file: " + sb.toString());
 			DatasetManager dsm = ManagerFactory.getDatasetManager();
 			DatasetSummaryBean summ = dsm.getDatasetsForUser(userIdentity);
-			DatasetBean dsb = dsm.SaveDataset(userIdentity, fileName, uploadedData);
+			DatasetBean dsb = dsm.saveDataset(userIdentity, fileName, new ByteArrayInputStream(uploadedData.toByteArray()));
 			summ.addPersonalData(dsb);
 			Gson gson = new GsonBuilder()
 				.setVersion(1.0)

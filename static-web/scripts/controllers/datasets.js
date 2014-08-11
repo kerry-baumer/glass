@@ -19,6 +19,7 @@ angular.module('glassApp').controller('DatasetCtrl', function ($scope, $upload, 
     $scope.publicGridOptions = { data: 'publicGridData' };
 	// setup data
 	dataservice.getUserDatasets().then(function(data) {
+		console.log(data);
 	});
 	
 	$scope.onFileSelect = function($files) {

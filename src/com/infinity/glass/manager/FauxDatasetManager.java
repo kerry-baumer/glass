@@ -3,6 +3,7 @@
  */
 package com.infinity.glass.manager;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Date;
@@ -39,13 +40,13 @@ public class FauxDatasetManager implements DatasetManager {
 	 * @see com.infinity.glass.manager.DatasetManager#SaveDataset(java.io.OutputStream)
 	 */
 	@Override
-	public DatasetBean SaveDataset(UserIdentity userIdentity, String origFileName, OutputStream stream) {
+	public DatasetBean saveDataset(UserIdentity userIdentity, String origFileName, InputStream stream) throws IOException {
 		
 		DatasetBean result = new DatasetBean();
 		result.setDatasetId(UUID.randomUUID().toString());
 		result.setLastSaved(new Date(System.currentTimeMillis()));
 		result.setOriginalFileName(origFileName);
-		result.setSize(0);
+		result.setSize(stream.available());
 		result.setUser(userIdentity);
 		return result;
 	}
@@ -54,7 +55,7 @@ public class FauxDatasetManager implements DatasetManager {
 	 * @see com.infinity.glass.manager.DatasetManager#LoadDataset(java.lang.String, java.lang.String, java.io.InputStream)
 	 */
 	@Override
-	public void LoadDataset(String userId, String datasetId, InputStream stream) {
+	public void LoadDataset(String userId, String datasetId, OutputStream stream) {
 		// TODO Auto-generated method stub
 
 	}
