@@ -1,11 +1,17 @@
 <div ng-controller="DatasetCtrl">
-	<div ng-show="showPersonalDataGrid" class="container-narrow">
+	<div ng-show="showPersonalDataGrid" class="container">
 		<h3>Personal Data Sets</h3>
         <div class="gridStyle" ng-grid="personalGridOptions">
+        	<div ng-repeat="gridData in personalGridData">
+        		{{gridData.originalFileName}}
+        		{{gridData.size}}
+        		{{gridData.lastSaved}}
+        		{{gridData.user.emailAddress}}
+        	</div>
         </div>
 	</div>
         
-	<div ng-show="showPublicDataGrid" class="container-narrow">
+	<div ng-show="showPublicDataGrid" class="container">
 		<h3>Public Data Sets</h3>
         <div class="gridStyle" ng-grid="publicGridOptions">
         </div>

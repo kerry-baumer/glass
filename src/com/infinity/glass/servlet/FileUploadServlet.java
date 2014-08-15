@@ -25,7 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.infinity.glass.manager.DatasetManager;
 import com.infinity.glass.manager.ManagerFactory;
-import com.infinity.glass.model.DatasetBean;
+import com.infinity.glass.model.UserDatasetBean;
 import com.infinity.glass.model.DatasetSummaryBean;
 import com.infinity.glass.model.UserIdentity;
 
@@ -95,12 +95,13 @@ public class FileUploadServlet extends HttpServlet {
 			LOGGER.info("Glass uploaded file: " + sb.toString());
 			DatasetManager dsm = ManagerFactory.getDatasetManager();
 			DatasetSummaryBean summ = dsm.getDatasetsForUser(userIdentity);
-			DatasetBean dsb = dsm.saveDataset(userIdentity, fileName, new ByteArrayInputStream(uploadedData.toByteArray()));
+			UserDatasetBean dsb = dsm.saveDataset(userIdentity, fileName, new ByteArrayInputStream(uploadedData.toByteArray()));
 			summ.addPersonalData(dsb);
 			Gson gson = new GsonBuilder()
 				.setVersion(1.0)
 				.create();
 			final String respText = gson.toJson(summ);
+			LOGGER.info(respText);
 			response.getWriter().write(respText);
 		} catch (Exception ex) {
 			throw new ServletException(ex);

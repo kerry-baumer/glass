@@ -2,6 +2,10 @@ package com.infinity.glass.filter;
 
 import java.io.IOException;
 
+import javax.security.auth.Subject;
+import javax.security.auth.callback.Callback;
+import javax.security.auth.callback.CallbackHandler;
+import javax.security.auth.callback.UnsupportedCallbackException;
 import javax.security.auth.login.LoginContext;
 import javax.security.auth.login.LoginException;
 import javax.servlet.Filter;
@@ -15,6 +19,8 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import com.sun.security.auth.callback.DialogCallbackHandler;
 
 @WebFilter("/AuthenticationFilter")
 public class AuthenticationFilter implements Filter {
@@ -35,26 +41,13 @@ public class AuthenticationFilter implements Filter {
         this.context.log("Requested Resource::"+uri);
          
         HttpSession session = req.getSession(false);
-        
-        try {
-			LoginContext lc = new LoginContext("glass");
-			lc.login();
-			System.out.println(lc);
-		} catch (LoginException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-         
         if(session == null && !(uri.endsWith("/#/"))){
             this.context.log("Unauthorized access request");
-//            res.sendRedirect("/glass/#/main");
-			chain.doFilter(request, response);
+            res.sendRedirect("login.html");
         } else {
             // pass the request along the filter chain
             chain.doFilter(request, response);
-        }
-         
-         
+        }         
     }
  
      
@@ -63,4 +56,14 @@ public class AuthenticationFilter implements Filter {
         //close any resources here
     }
  
+    private class GlassCallbackHandler implements CallbackHandler {
+
+		@Override
+		public void handle(Callback[] callbacks) throws IOException,
+				UnsupportedCallbackException {
+			System.out.println("In handle()");
+			
+		}
+    	
+    }
 }

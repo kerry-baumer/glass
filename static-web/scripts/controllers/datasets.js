@@ -19,7 +19,7 @@ angular.module('glassApp').controller('DatasetCtrl', function ($scope, $upload, 
     $scope.publicGridOptions = { data: 'publicGridData' };
 	// setup data
 	dataservice.getUserDatasets().then(function(data) {
-		console.log(data);
+		showUserFiles(data);
 	});
 	
 	$scope.onFileSelect = function($files) {
@@ -36,9 +36,15 @@ angular.module('glassApp').controller('DatasetCtrl', function ($scope, $upload, 
 	        console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
 	      }).success(function(data, status, headers, config) {
 	        // file is uploaded successfully
-	        console.log(data);
+	    	  showUserFiles(data);
 	        
 	      });
 	    }
 	  };
+	  
+	  var showUserFiles = function(data) {
+		  $scope.showPersonalDataGrid = data.personalData.length > 0;
+		  $scope.personalGridData = data.personalData;
+		  $scope.showPublicDataGrid = data.publicData.length > 0;
+	  }
 });

@@ -14,8 +14,8 @@ import java.util.List;
 public class DatasetSummaryBean implements Serializable {
 
 	private static final long serialVersionUID = 1L;
-	private List<DatasetBean> personalData = new LinkedList<DatasetBean>();
-	private List<DatasetBean> publicData = new LinkedList<DatasetBean>();
+	private List<UserDatasetBean> personalData = new LinkedList<UserDatasetBean>();
+	private List<UserDatasetBean> publicData = new LinkedList<UserDatasetBean>();
 	
 	/**
 	 * 
@@ -24,27 +24,27 @@ public class DatasetSummaryBean implements Serializable {
 		// TODO Auto-generated constructor stub
 	}
 
-	public void addPersonalData(final DatasetBean bean) {
+	public void addPersonalData(final UserDatasetBean bean) {
 		personalData.add(bean);
 	}
 	
-	public List<DatasetBean> getPersonalData() {
+	public List<UserDatasetBean> getPersonalData() {
 		return personalData;
 	}
 
-	public void setPersonalData(List<DatasetBean> personalData) {
+	public void setPersonalData(List<UserDatasetBean> personalData) {
 		this.personalData = personalData;
 	}
 
-	public void addPublicData(final DatasetBean bean) {
+	public void addPublicData(final UserDatasetBean bean) {
 		publicData.add(bean);
 	}
 	
-	public List<DatasetBean> getPublicData() {
+	public List<UserDatasetBean> getPublicData() {
 		return publicData;
 	}
 
-	public void setPublicData(List<DatasetBean> publicData) {
+	public void setPublicData(List<UserDatasetBean> publicData) {
 		this.publicData = publicData;
 	}
 

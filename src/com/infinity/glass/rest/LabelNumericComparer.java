@@ -9,16 +9,16 @@ import java.util.Map;
 
 import org.apache.commons.math3.stat.descriptive.DescriptiveStatistics;
 
-import com.infinity.glass.rest.data.CompareData;
 import com.infinity.glass.rest.data.DoubleDataColumn;
 import com.infinity.glass.rest.data.LabelNumericCompareData;
 import com.infinity.glass.rest.data.StatTuple;
 import com.infinity.glass.rest.data.StringDataColumn;
+import com.infinity.glass.rest.utils.StatsMath;
 
 public class LabelNumericComparer {
 
-	public CompareData compare(StringDataColumn labelColumn, DoubleDataColumn numericColumn) {
-		LabelNumericCompareData data = new LabelNumericCompareData(labelColumn.getLabel(), numericColumn.getLabel());
+	public LabelNumericCompareData compare(StringDataColumn labelColumn, DoubleDataColumn numericColumn, String requestUUID) {
+		LabelNumericCompareData data = new LabelNumericCompareData(labelColumn.getLabel(), numericColumn.getLabel(), requestUUID);
 		data.setTitle(labelColumn.getLabel() + " vs. " + numericColumn.getLabel());
 		
 		Map<String, DescriptiveStatistics> statMap = new HashMap<String, DescriptiveStatistics>();
@@ -38,6 +38,7 @@ public class LabelNumericComparer {
 			}
 		}
 		
+		
 		List<StatTuple> tuples = new ArrayList<StatTuple>();
 		for (String key : statMap.keySet()) {
 			DescriptiveStatistics stats = statMap.get(key);
@@ -49,6 +50,8 @@ public class LabelNumericComparer {
 			
 			StatTuple tuple = new StatTuple(key, sum, count, average, median);
 			tuples.add(tuple);
+			
+//			means.add(new double[]{average});
 		}
 		
 		Collections.sort(tuples, new Comparator<StatTuple>() {
@@ -59,6 +62,13 @@ public class LabelNumericComparer {
 		});
 		
 		data.addTuples(tuples);
+		
+		int i = 0;
+		List<double[]> means = new ArrayList<double[]>();
+		for (DescriptiveStatistics ds : statMap.values()) {
+			means.add(ds.getValues());
+		}
+		data.setCorrelation(StatsMath.getAnovaF(means));
 		
 		return data;
 	}

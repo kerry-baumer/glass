@@ -4,7 +4,7 @@
 package com.infinity.glass.manager;
 
 /**
- * @author kbaumer
+ * @author kerry.baumer
  *
  */
 public final class ManagerFactory {
@@ -21,7 +21,10 @@ public final class ManagerFactory {
 	}
 
 	public static UserIdentityManager getUserIdentityManager() {
-		return new FauxUserIdentityManager();
+		return new UserIdentityManager();
 	}
-
+	
+	public static UserPersistence getUserPersistence() {
+		return new FauxUserPersistence();
+	}
 }

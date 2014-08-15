@@ -2,15 +2,15 @@ package com.infinity.glass.rest;
 
 import java.util.List;
 
-import com.infinity.glass.rest.data.CompareData;
 import com.infinity.glass.rest.data.DoubleDataColumn;
 import com.infinity.glass.rest.data.NumericNumericCompareData;
 import com.infinity.glass.rest.data.XYTuple;
+import com.infinity.glass.rest.utils.StatsMath;
 
 public class NumericNumericComparer {
 
-	public CompareData compare(DoubleDataColumn firstColumn, DoubleDataColumn secondColumn) {
-		NumericNumericCompareData data = new NumericNumericCompareData(firstColumn.getLabel(), secondColumn.getLabel());
+	public NumericNumericCompareData compare(DoubleDataColumn firstColumn, DoubleDataColumn secondColumn, String requestUUID) {
+		NumericNumericCompareData data = new NumericNumericCompareData(firstColumn.getLabel(), secondColumn.getLabel(), requestUUID);
 		data.setTitle(firstColumn.getLabel() + " vs. " + secondColumn.getLabel());
 		
 		List<Double> oneRows = firstColumn.getRows();
@@ -24,6 +24,9 @@ public class NumericNumericComparer {
 				data.addPoint(tuple);
 			}
 		}
+		
+		double correlation = StatsMath.getCorrelation(data.getPoints());
+		data.setCorrelation(correlation);
 		
 		return data;
 	}

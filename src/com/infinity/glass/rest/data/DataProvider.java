@@ -15,9 +15,8 @@ import javax.servlet.ServletContext;
 import com.infinity.glass.rest.data.DataColumn.Type;
 
 public class DataProvider {
-
-	private static final String WEB_INF_DATA_XTRACT_CSV = "/WEB-INF/data-xtract.csv";
-
+	public static final String WEB_INF_DATA_XTRACT_CSV = "/WEB-INF/data-xtract.csv";
+	
 	public MatrixData getMatrixData(ServletContext context) {
 		return getMatrixData(context, WEB_INF_DATA_XTRACT_CSV);
 	}
@@ -44,13 +43,12 @@ public class DataProvider {
 			} catch (IOException e) {
 			}
 		}
-		
+	
 		return headers;
 	}
 	
 	public MatrixData getMatrixData(ServletContext context, String dataFileName) {
 		MatrixData data = new MatrixData();
-		
 		LineNumberReader headersin = null;
 		String[] headers = null;
 		try {
@@ -101,6 +99,21 @@ public class DataProvider {
 			}
 		}
 			
+		// Split on the comma only if that comma has zero, or an even number of quotes ahead of it.
+		// Thank you stackoverflow.com
+        final String otherThanQuote = " [^\"] ";
+        final String quotedString = String.format(" \" %s* \" ", otherThanQuote);
+        final String regex = String.format("(?x) "+ // enable comments, ignore white spaces
+                ",                         "+ // match a comma
+                "(?=                       "+ // start positive look ahead
+                "  (                       "+ //   start group 1
+                "    %s*                   "+ //     match 'otherThanQuote' zero or more times
+                "    %s                    "+ //     match 'quotedString'
+                "  )*                      "+ //   end group 1 and repeat it zero or more times
+                "  %s*                     "+ //   match 'otherThanQuote'
+                "  $                       "+ // match the end of the string
+                ")                         ", // stop positive look ahead
+                otherThanQuote, quotedString, otherThanQuote);
 		
 		LineNumberReader in = null;
 		try {
@@ -110,7 +123,7 @@ public class DataProvider {
 			line = in.readLine();
 			String[] values = line.split(",");
 			while (line != null) {
-				values = line.split(",");
+				values = line.split(regex, -1);
 				
 				for (int i = 0; i < values.length; i++) {
 					DataColumn<?> column = data.getDataColumn(headers[i]);

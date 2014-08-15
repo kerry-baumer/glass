@@ -16,7 +16,6 @@ public class RestApplication extends Application {
 	     singletons.add(new UiConfigProvider());
 	     singletons.add(new DescribeProvider());
 	     singletons.add(new CompareProvider());
-	     singletons.add(new UserDatasetProvider());
 	}
 	
 	@Override
